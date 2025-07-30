@@ -5,11 +5,20 @@ const PORT = 8089;
 
 const server = http.createServer((req, res) => {
     const url = req.url;
+    const method = req.method;
+
     if(url === "/") {
+
         // HOME PAGE
-        res.write("welcome to the fitness page");
-        res.write(" here you will become fit");
-        res.end();
+        if(method === "GET") {
+            res.write("welcome to the fitness page");
+            res.write(" here you will become fit");
+            res.end();
+        } else {
+            res.writeHead(405, {"content-type": "application/json" });
+            res.end("NOT ALLOWED");
+        }
+        
     } else if (url === "/contacts") {
         res.end("contant: abcd@gmail.com, phone: 87383838377");
     } else if(url === "/fitness") {
