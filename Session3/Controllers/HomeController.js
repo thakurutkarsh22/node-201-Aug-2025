@@ -1,5 +1,4 @@
-function HomeResponse (req, res) {
-    // is writing the response and end it as well 
+function HomeResponse (req, res, next) {
   res.send('welcome to the fitness page here you will become fit !!!!!')
 }
 

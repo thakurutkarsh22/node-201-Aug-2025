@@ -1,17 +1,18 @@
 const express = require("express");
-const { HomeResponse, ContactResponse } = require("./Controllers/HomeController");
-const { getAllUsers, getUserByGender, getUser } = require("./Controllers/ActivityController");
-const PORT = 8089;
+require('dotenv').config() // load my .env file in process.env
+const HomeRoute = require("./Routes/HomeRoute")
+const ActivityRoute = require("./Routes/ActivityRoute");
+const AuthMiddleware = require("./Middlewares/AuthMiddleware");
+
+
+
+const PORT = process.env.PORT;
 
 const server = express();
 
-server.get('/', HomeResponse)
+server.use('/', HomeRoute)
 
-server.get('/home', HomeResponse)
-
-server.get("/contacts", ContactResponse)
-
-server.get("/fitness", (req, res) => {
+server.get("/fitness", AuthMiddleware, (req, res, next) => {
     const dietChart = {
             name: "utkarhs",
             age: 28,
@@ -31,21 +32,8 @@ server.get("/fitness", (req, res) => {
 
 
 
-// ACtivity 
-
-
-// 1. Get all the users 
-
-server.get("/api/v1/activity/users", getAllUsers);
-
-// 2. You want to get USer BY gender 
-// by using query params: https://www.google.com/search?q=dhoni
-
-server.get("/api/v1/activity/users/search", getUserByGender);
-
-// 3. get information about only 1 USER
-// Method:  Params : https://pokeapi.co/api/v2/pokemon/pikachu
-server.get("/api/v1/activity/user/:firstName", getUser);
+// I allow EVERY request GET POST PUT DELETE PATCH OPTION HEAD
+server.use("/api/v1/activity", ActivityRoute);
 
 
 server.listen(PORT, () => {
