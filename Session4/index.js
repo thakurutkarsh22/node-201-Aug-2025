@@ -2,7 +2,9 @@ const express = require("express");
 require('dotenv').config() // load my .env file in process.env
 const HomeRoute = require("./Routes/HomeRoute")
 const ActivityRoute = require("./Routes/ActivityRoute");
+const BlogRoute = require("./Routes/BlogRoute");
 const AuthMiddleware = require("./Middlewares/AuthMiddleware");
+const { default: mongoose } = require("mongoose");
 
 
 
@@ -30,10 +32,24 @@ server.get("/fitness", AuthMiddleware, (req, res, next) => {
     res.status(202).json(dietChart);
 })
 
-
-
-// I allow EVERY request GET POST PUT DELETE PATCH OPTION HEAD
 server.use("/api/v1/activity", ActivityRoute);
+
+
+server.use("/blogs", BlogRoute)
+
+
+
+const dbName = process.env.DB_NAME;
+const dbPort = process.env.DB_PORT;
+const dbHost = process.env.DB_HOST;
+// database connection 
+mongoose.connect(`${dbHost}:${dbPort}/${dbName}`)
+.then(() => {
+    console.log("thumbs up DB IS CONNECTED")
+})
+
+
+
 
 
 server.listen(PORT, () => {
