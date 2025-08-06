@@ -12,6 +12,13 @@ const PORT = process.env.PORT;
 
 const server = express();
 
+
+// UNIVERSAL MIDDLEWARE -> it will work for every request 
+// not giving any path here in server.use() means UNIVERSAL MIDDLEWARE
+// Returns middleware that only parses json and only looks at requests where the Content-Type header matches the type option.
+server.use(express.json());
+
+
 server.use('/', HomeRoute)
 
 server.get("/fitness", AuthMiddleware, (req, res, next) => {
@@ -35,7 +42,7 @@ server.get("/fitness", AuthMiddleware, (req, res, next) => {
 server.use("/api/v1/activity", ActivityRoute);
 
 
-server.use("/blogs", BlogRoute)
+server.use("/api/v1/blogs", BlogRoute)
 
 
 
