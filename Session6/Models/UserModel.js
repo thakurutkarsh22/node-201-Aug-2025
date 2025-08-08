@@ -11,6 +11,7 @@ const userSchema = new Schema({
     },
     age: {
       type: Number,
+      required: true,
       min: [18, "Age must be a positive number"],
       max: [150, "Age must be less than or equal to 150"],
     },
