@@ -58,6 +58,7 @@ mongoose.connect(`${dbHost}:${dbPort}/${dbName}`)
     console.log("thumbs up DB IS CONNECTED")
 })
 
+console.log("gello");
 
 
 
