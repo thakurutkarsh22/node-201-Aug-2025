@@ -5,6 +5,7 @@ function getAllUsers(req, res) {
 
 }
 
+// Signup process
 async function createUser(req, res) {
     const body = req.body;
     const {name, age, email, password} = body;
@@ -19,5 +20,17 @@ async function createUser(req, res) {
     }
 }
 
+// login 
+async function login(req, res) {
+    const body = req.body;
+    const {email, password} = body;
 
-module.exports = {getAllUsers, createUser}
+    try {
+        const response = await UserService.login(email, password);
+        res.status(201).json(response);
+    } catch(error) {
+        res.status(500).json(error);
+    }
+}
+
+module.exports = {getAllUsers, createUser, login}
