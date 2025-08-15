@@ -1,6 +1,9 @@
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { default: mongoose } = require("mongoose");
 const UserModel = require("../Models/UserModel");
+const { JWT_KEY } = require("../Middlewares/AuthMiddleware");
+
 class UserService {
 
     static async createUsers(name, age, email, password) {
@@ -24,7 +27,7 @@ class UserService {
 
     static async login(email, password) {
         const userArray = await UserService.getUserByEmail(email);
-        console.log("userarray",userArray);
+
 
         if(!userArray || !userArray.length) {
             return {
@@ -34,8 +37,17 @@ class UserService {
             const user = userArray[0];
             const usersHashedPassword = user.password; // this password is hashed from DB 
             const res = await bcrypt.compare(password, usersHashedPassword) // true, false
+
+            let token = "";
+            if(res) {
+                token = jwt.sign({username:user.email, nationality: "Indian" }, JWT_KEY, {
+                    expiresIn: "20000ms"
+                })
+            }
+
             return {
                 isLogged: res,
+                token: token,
             }
         }
 

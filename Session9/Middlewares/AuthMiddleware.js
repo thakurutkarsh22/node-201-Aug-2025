@@ -1,18 +1,32 @@
-const SECRET_PASSWORD = process.env.SERVER_PASSWORD;
+const jwt = require("jsonwebtoken");
+const JWT_KEY = "ASdjasljfglasudfgo3782qrgfa8w74r";
+
 
 function AuthMiddleware(req, res, next) {
     
     const headers = req.headers;
-    const givenPasswordAuthorization = headers.authorization; // user is giving from postman 
+    const bearerToken = headers.authorization;
+    const token = bearerToken?.split(" ")[1];
 
-    if(givenPasswordAuthorization === SECRET_PASSWORD) {
-        //  its a good request
-        next();
+    if(!token) {
+        res.status(401).json({message: "please login!!"})
     } else {
-        //  its a bad request 
-        res.status(403).json({message: "please login or send the password"})
+        // 1. verify the token 
+        jwt.verify(token, JWT_KEY, (err, decodedJWT ) => {
+            console.log("decodedJWT", decodedJWT);
+
+            if(err) {
+                res.status(401).json({message: "please re-login", err})
+            } else {
+                // I can modify the request 
+                
+                next();
+            }
+        })
+
+
     }
 
 }
 
-module.exports = AuthMiddleware;
+module.exports = {AuthMiddleware, JWT_KEY};

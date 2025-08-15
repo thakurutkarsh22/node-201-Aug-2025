@@ -4,8 +4,9 @@ const HomeRoute = require("./Routes/HomeRoute")
 const ActivityRoute = require("./Routes/ActivityRoute");
 const BlogRoute = require("./Routes/BlogRoute");
 const UserRoute = require("./Routes/UserRoute");
-const AuthMiddleware = require("./Middlewares/AuthMiddleware");
+
 const { default: mongoose } = require("mongoose");
+const { AuthMiddleware } = require("./Middlewares/AuthMiddleware");
 
 
 
