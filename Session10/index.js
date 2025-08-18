@@ -8,12 +8,14 @@ const UserRoute = require("./Routes/UserRoute");
 const { default: mongoose } = require("mongoose");
 const { AuthMiddleware } = require("./Middlewares/AuthMiddleware");
 
-
+const passport  = require("passport");
+const configurationPassport = require("./Config/Passport");
 
 const PORT = process.env.PORT;
 
 const server = express();
 
+configurationPassport(passport);
 
 // UNIVERSAL MIDDLEWARE -> it will work for every request 
 // not giving any path here in server.use() means UNIVERSAL MIDDLEWARE
